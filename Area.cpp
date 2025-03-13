@@ -9,8 +9,8 @@ Area::Area()
 	Dir = 1;
 	num = 0;
 	EndRect = new CRect(167,113,193,130);
-	//clickP.SetPoint(0, 0);
 
+	//적 방향전환위치
 	ChRect[0] = new CRect(19, 250, 36, 265);
 	ChRect[1] = new CRect(470, 250, 485, 265);
 	ChRect[2] = new CRect(470, 110, 485, 120);
@@ -21,7 +21,7 @@ Area::Area()
 	ChRect[7] = new CRect(14, 396, 20, 415);
 	ChRect[8] = new CRect(14, 575, 20, 583);
 	ChRect[9] = new CRect(173, 575, 188, 583);
-
+	//타워 설치 가능 위치좌표
 	SummRect[0] = new CRect(50, 115, 95, 145);
 	SummRect[1] = new CRect(105, 115, 155, 145);
 	SummRect[2] = new CRect(50, 153, 95, 195);
@@ -94,7 +94,9 @@ void Area::ControlTower(int x, int y, STATE state)
 	else if (state == 2) { // 업그레이드
 		for (int i = 0; i < 46; i++) {
 			if (SummRect[i].PtInRect(clickP) && empty[i] != 4) {
-				towerMgr->UpgradeTower(i);
+				num = rand() % 4;
+				empty[i] = num;
+				towerMgr->UpgradeTower(i,num);
 			}
 		}
 	}

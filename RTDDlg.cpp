@@ -7,11 +7,8 @@
 #include "framework.h"
 #include "RTD.h"
 #include "RTDDlg.h"
-//#include "Enemy.h"
-//#include "Monster.h"
 #include "Area.h"
 #include "MonsterManager.h"
-//#include "TowerManager.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -61,10 +58,8 @@ CRTDDlg::CRTDDlg(CWnd* pParent /*=nullptr*/)
 	,m_strIP(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-	//enemy = new Enemy();
 	monsterMgr = new MonsterManager();
 	area = new Area();
-	//towerMgr = new TowerManager();
 	round = 1;
 	round2 = 1;
 	y = 0;
@@ -313,7 +308,6 @@ void CRTDDlg::OnTimer(UINT_PTR nIDEvent)
 				monsterMgr->Reset();
 				Wait(3000);
 				SetTimer(2, 500, nullptr);
-				//monsterMgr->ResetPoint();
 			}
 			else if (monsterMgr->extraMon <= 0 && monsterMgr->fieldMon <= 0 && round == 8) {
 				victory = 1;
@@ -339,7 +333,8 @@ void CRTDDlg::OnTimer(UINT_PTR nIDEvent)
 			break;
 		}
 	}
-	/* 서버 접속없이 하려면 위를 주석처리 아래는 주석해제
+	//서버 접속없이 하려면 위를 주석처리 아래는 주석해제
+	/*
 	switch (nIDEvent)
 	{
 	case 1:
@@ -377,6 +372,7 @@ void CRTDDlg::OnTimer(UINT_PTR nIDEvent)
 		break;
 	}*/
 	
+
 	CDialogEx::OnTimer(nIDEvent);
 }
 

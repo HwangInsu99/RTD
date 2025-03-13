@@ -6,11 +6,9 @@ public:
 	int hp;
 	int Dir;
 	int speed;
-	int order;
 	int x, y;
 	bool die;
 	bool decrease;
-	//CRect conRect;
 	CRect damageRect;
 
 

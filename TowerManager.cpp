@@ -6,7 +6,6 @@
 #include "Saber.h"
 #include "Monster.h"
 
-//using namespace std;
 
 int point[] = { 71, 130, 130, 130,	71, 174,130, 174,71, 222, 130, 222 ,225, 130,280, 130,	225, 174,	280, 174,	225, 222,
 	280, 222,	373, 155,	433, 155,	373, 219,	433, 219,	30, 301,	78, 301,	135, 301,	30, 357,	78, 357,	135, 357,	225, 302,	280, 302,
@@ -17,16 +16,11 @@ TowerManager::TowerManager()
 {
 	money = 300;
 	for (int i = 0; i < 46; i++)
-		tower[i] = nullptr; // NULL
+		tower[i] = nullptr;
 }
 
 
 TowerManager::~TowerManager() {
-	//for (int i = 0; i < tower.size(); i++)
-	//	delete tower[i];
-	//for (vector<Tower*>::iterator it = tower.begin(); it != tower.end(); it++) {
-	//	delete* it;
-	//}
 
 	for (int i = 0; i < 46; i++)
 		if (tower[i] != nullptr)
@@ -40,8 +34,6 @@ void TowerManager::summTower(int x, int y)
 		switch (y)
 		{
 		case 0:
-			//tower[count++] = new Archer(point[2 * x], point[2 * x + 1]);
-			//tower.push_back(new Archer(point[2 * x], point[2 * x + 1]));
 			tower[x] = new Archer(point[2 * x], point[2 * x + 1], 1);
 			break;
 		case 1:
@@ -57,15 +49,13 @@ void TowerManager::summTower(int x, int y)
 	}
 }
 
-void TowerManager::UpgradeTower(int x)
+void TowerManager::UpgradeTower(int x, int y)
 {
-	srand((unsigned int)time(NULL));
-	int num = rand() % 4;
 	if (tower[x]->grade == 1 && money >= 50) {
 		delete tower[x];
 		tower[x] = nullptr;
 		money = money - 50;
-		switch (num)
+		switch (y)
 		{
 		case 0:
 			tower[x] = new Archer(point[2 * x], point[2 * x + 1], 2);
@@ -85,7 +75,7 @@ void TowerManager::UpgradeTower(int x)
 		delete tower[x];
 		tower[x] = nullptr;
 		money = money - 100;
-		switch (num)
+		switch (y)
 		{
 		case 0:
 			tower[x] = new Archer(point[2 * x], point[2 * x + 1], 3);
@@ -101,6 +91,27 @@ void TowerManager::UpgradeTower(int x)
 			break;
 		}
 	}
+}
+
+void TowerManager::Delete(int i) {
+
+
+	if (tower[i] != nullptr)
+	{
+		switch (tower[i]->grade) {
+		case 1:
+			money = money + 25;
+			break;
+		case 2:
+			money = money + 50;
+			break;
+		case 3:
+			money = money + 100;
+			break;
+		}
+		delete tower[i];
+	}
+	tower[i] = nullptr;
 }
 
 void TowerManager::attackCheck(CRect rect , int x)
@@ -127,42 +138,12 @@ void TowerManager::Tick()
 }
 
 void TowerManager::Draw(CDC& dc) {
-	//for (int i = 0; i < tower.size(); i++) {
-	//	tower[i]->Draw(dc);
-	//}
-
-	//for (vector<Tower*>::iterator it = tower.begin(); it != tower.end(); it++) {
-	//	(*it)->Draw(dc);
-	//}
 	CString str;
 	str.Format(L"µ·: %d", money);
 	dc.TextOutW(520, 130, str);
 	for (int i = 0; i < 46; i++)
 		if (tower[i] != nullptr)
 			tower[i]->Draw(dc);
-}
-
-void TowerManager::Delete(int i) {
-	//vector<Tower*>::iterator it = tower.erase(tower.begin() + i)
-	//	delete* it;
-
-
-	if (tower[i] != nullptr)
-	{
-		switch (tower[i]->grade) {
-		case 1:
-			money = money + 25;
-			break;
-		case 2:
-			money = money + 50;
-			break;
-		case 3:
-			money = money + 100;
-			break;
-		}
-		delete tower[i];
-	}
-	tower[i] = nullptr;
 }
 
 

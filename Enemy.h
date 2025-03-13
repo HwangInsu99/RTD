@@ -10,7 +10,7 @@ public:
 
 	static void LoadImage();
 
-	Enemy(int a, int b);
+	Enemy(int a);
 	void Draw(CDC& dc);
 	void GetRect(CRect& rect);
 	void Tick();

@@ -23,9 +23,7 @@ MonsterManager::~MonsterManager()
 void MonsterManager::SummMonster(int x)
 {
 	if (extraMon > 0) {
-		monster[num] = new Enemy(num, x);
-		monster[num]->die = false;
-		monster[num]->decrease = false;
+		monster[num] = new Enemy(x);
 		extraMon--;
 		fieldMon++;
 		num++;

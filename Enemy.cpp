@@ -11,29 +11,29 @@ void Enemy::LoadImage()
 	images.Load(L"images\\Enemy.png");
 }
 
-Enemy::Enemy(int a, int b) {
+Enemy::Enemy(int a) {
 	x = 15;
 	y = 115;
 	speed = 10;
-	Dir = 1;
+	Dir = 4;
 	die = false;
 	decrease = false;
-	this->round = b;
-	this->order = a;
+	this->round = a;
 	this->hp = 20 + 10*round;
 }
 
 
 void Enemy::Tick()
 {
+	//방향전환
 	if (!die) {
-		if (Dir == 1)
+		if (Dir == 4)
 			y += speed;
-		else if (Dir == 2)
+		else if (Dir == 1)
 			x += speed;
-		else if (Dir == 3)
+		else if (Dir == 2)
 			y -= speed;
-		else if (Dir == 4)
+		else if (Dir == 3)
 			x -= speed;
 		damageRect.SetRect(x + 5, y + 5, x + 15, y + 15);
 	}
@@ -42,11 +42,12 @@ void Enemy::Damaged(int x)
 {
 	if (!die) {
 		hp = hp - x;
-		if (hp <= 0)
+		if (hp <= 0) {
 			die = true;
+		}
 	}
 }
-
+//특정좌표에 닿았는지 확인
 void Enemy::ContactCollide()
 {
 	if (!die) {
@@ -54,37 +55,13 @@ void Enemy::ContactCollide()
 		CRect conRect;
 		GetRect(conRect);
 		CRect diff;
-		if (diff.IntersectRect(&conRect, &area->ChRect[0])) {
-			Dir = 2;
+		for (int i = 0; i < 10; i++) {
+			if (diff.IntersectRect(&conRect, &area->ChRect[i])) {
+				Dir = (i % 4) + 1;
+				return; // 첫 번째 충돌 시 바로 방향을 설정하고 리턴
+			}
 		}
-		else if (diff.IntersectRect(&conRect, &area->ChRect[1])) {
-			Dir = 3;
-		}
-		else if (diff.IntersectRect(&conRect, &area->ChRect[2])) {
-			Dir = 4;
-		}
-		else if (diff.IntersectRect(&conRect, &area->ChRect[3])) {
-			Dir = 1;
-		}
-		else if (diff.IntersectRect(&conRect, &area->ChRect[4])) {
-			Dir = 2;
-		}
-		else if (diff.IntersectRect(&conRect, &area->ChRect[5])) {
-			Dir = 3;
-		}
-		else if (diff.IntersectRect(&conRect, &area->ChRect[6])) {
-			Dir = 4;
-		}
-		else if (diff.IntersectRect(&conRect, &area->ChRect[7])) {
-			Dir = 1;
-		}
-		else if (diff.IntersectRect(&conRect, &area->ChRect[8])) {
-			Dir = 2;
-		}
-		else if (diff.IntersectRect(&conRect, &area->ChRect[9])) {
-			Dir = 3;
-		}
-		else if (diff.IntersectRect(&conRect, &area->EndRect)) {
+		if (diff.IntersectRect(&conRect, &area->EndRect)) {
 			die = true;
 		}
 	}

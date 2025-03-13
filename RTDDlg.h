@@ -6,10 +6,7 @@
 
 #pragma once
 class MonsterManager;
-//class Monster;
-//class Enemy;
 class Area;
-//class TowerManager;
 
 
 // CRTDDlg 대화 상자
@@ -42,11 +39,8 @@ protected:
 	afx_msg LPARAM OnReceive(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 public:
-	//Enemy* enemy;
 	MonsterManager* monsterMgr;
-	//Monster* monster;
 	Area* area;
-	//TowerManager* towerMgr;
 	int round;
 	int round2;
 	int y;

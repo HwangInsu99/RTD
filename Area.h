@@ -9,7 +9,6 @@ public:
 	CRect ChRect[10];
 	CRect SummRect[46];
 	CRect EndRect;
-	int Dir;
 	int empty[46];
 	int num;
 	TowerManager* towerMgr;
@@ -22,4 +21,3 @@ public:
 	void Tick();
 	void LoadImage();
 };
-

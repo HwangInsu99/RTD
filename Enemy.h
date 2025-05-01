@@ -17,4 +17,3 @@ public:
 	void Damaged(int x);
 	void ContactCollide();
 };
-

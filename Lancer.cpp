@@ -20,28 +20,29 @@ Lancer::Lancer(int a, int b, int c)
 	this->posture = 0;
 	this->active = false;
 	this->target = 16;
-
+	this->range = 110;
 	damage = 3 + 5 * grade;
 }
-
 void Lancer::Draw(CDC& dc)
 {
 	images[posture].Draw(dc, a - (10 + grade * 5), b - (10 + grade * 5), 20 + grade * 10, 20 + grade * 10);
 }
 void Lancer::CheckIn(CRect monRect, int x)
 {
-	CRect myRect;
-	GetRect(myRect);
-	CRect myRect2;
-	GetRect2(myRect2);
-	CRect diff;
-	if (diff.IntersectRect(&myRect, &monRect) && !active) {
-		target = x;
-		active = true;
-	}
-	else if (diff.IntersectRect(&myRect2, &monRect) && !active) {
-		target = x;
-		active = true;
+	CPoint points[4] = {
+		CPoint(monRect.left, monRect.top),
+		CPoint(monRect.right, monRect.top),
+		CPoint(monRect.left, monRect.bottom),
+		CPoint(monRect.right, monRect.bottom)
+	};
+	for (int i = 0; i < 4; i++) {
+		int dx = points[i].x - a;
+		int dy = points[i].y - b;
+
+		if ((dx * dx + dy * dy) <= (range * range)) {
+			target = x;
+			active = true;
+		}
 	}
 }
 void Lancer::Attack()
@@ -58,13 +59,4 @@ void Lancer::posChange()
 	}
 	else
 		posture++;
-}
-void Lancer::GetRect(CRect& rect)
-{
-	rect.SetRect(a - 120, b - 30, a + 120, b + 30);
-}
-
-void Lancer::GetRect2(CRect& rect)
-{
-	rect.SetRect(a - 30, b - 120, a + 30, b + 120);
 }

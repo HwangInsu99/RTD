@@ -179,92 +179,64 @@ void CRTDDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 }
 
-// 대화 상자에 최소화 단추를 추가할 경우 아이콘을 그리려면
-//  아래 코드가 필요합니다.  문서/뷰 모델을 사용하는 MFC 애플리케이션의 경우에는
-//  프레임워크에서 이 작업을 자동으로 수행합니다.
-
 void CRTDDlg::OnPaint()
 {
-	if (IsIconic())
-	{
-		CPaintDC dc(this); // 그리기를 위한 디바이스 컨텍스트입니다.
+	CPaintDC dc(this);
 
-		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
+	CRect rect;
+	this->GetClientRect(&rect);
 
-		// 클라이언트 사각형에서 아이콘을 가운데에 맞춥니다.
-		int cxIcon = GetSystemMetrics(SM_CXICON);
-		int cyIcon = GetSystemMetrics(SM_CYICON);
-		CRect rect;
-		GetClientRect(&rect);
-		int x = (rect.Width() - cxIcon + 1) / 2;
-		int y = (rect.Height() - cyIcon + 1) / 2;
+	CDC MemDC;
+	CBitmap* pOldBitmap, bmp;
 
-		// 아이콘을 그립니다.
-		dc.DrawIcon(x, y, m_hIcon);
+	MemDC.CreateCompatibleDC(&dc);
+	bmp.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+	pOldBitmap = MemDC.SelectObject(&bmp);
+	MemDC.PatBlt(0, 0, rect.Width(), rect.Height(), WHITENESS);
+
+	backG.Draw(MemDC, 0, 100, 500, 500);
+	create.Draw(MemDC, 520, 180, 70, 70);
+	upgrade.Draw(MemDC, 520, 280, 70, 70);
+	sell.Draw(MemDC, 520, 380, 70, 70);
+
+
+	if (victory == 1) {
+		str.Format(L"YOU WIN");
+		MemDC.TextOutW(250, 30, str);
 	}
-	else
-	{
-		CPaintDC dc(this);
-
-		CRect rect;
-		this->GetClientRect(&rect);
-
-		CDC MemDC;
-		CBitmap* pOldBitmap, bmp;
-
-		MemDC.CreateCompatibleDC(&dc);
-		bmp.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
-		pOldBitmap = MemDC.SelectObject(&bmp);
-		MemDC.PatBlt(0, 0, rect.Width(), rect.Height(), WHITENESS);
-		
-		backG.Draw(MemDC, 0, 100, 500, 500);
-		create.Draw(MemDC, 520, 180, 70, 70);
-		upgrade.Draw(MemDC, 520, 280, 70, 70);
-		sell.Draw(MemDC, 520, 380, 70, 70);
-
-
-		if (victory == 1) {
-			str.Format(L"YOU WIN");
-			MemDC.TextOutW(250, 30, str);
-		}
-		else if (victory == 2) {
-			str.Format(L"you Lose");
-			MemDC.TextOutW(250, 30, str);
-		}
-		else {
-			//str.Format(L"좌표 : %d, %d", round, y);
-			str.Format(L"Round : % d", round);
-			MemDC.TextOutW(250, 30, str);
-		}
-		CString shot;
-		shot.Format(L"상대 라운드");
-		MemDC.TextOutW(500, 10, shot);
-		str2.Format(L"Round : %d", round2);
-		MemDC.TextOutW(500, 30, str2);
-		connStr.Draw(MemDC, 20, 20, 50, 30);
-
-
-		monsterMgr->Draw(MemDC);
-		area->Draw(MemDC, state);
-
-		dc.BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);
-
-		MemDC.SelectObject(pOldBitmap);
-
-		MemDC.DeleteDC();
-		bmp.DeleteObject();
-
-		CDialogEx::OnPaint();
+	else if (victory == 2) {
+		str.Format(L"you Lose");
+		MemDC.TextOutW(250, 30, str);
 	}
+	else {
+		str.Format(L"Round : % d", round);
+		MemDC.TextOutW(250, 30, str);
+	}
+	CString shot;
+	shot.Format(L"상대 라운드");
+	MemDC.TextOutW(500, 10, shot);
+	str2.Format(L"Round : %d", round2);
+	MemDC.TextOutW(500, 30, str2);
+	connStr.Draw(MemDC, 20, 20, 50, 30);
+
+
+	monsterMgr->Draw(MemDC);
+	area->Draw(MemDC, state);
+
+	dc.BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);
+
+	MemDC.SelectObject(pOldBitmap);
+
+	MemDC.DeleteDC();
+	bmp.DeleteObject();
+
+	CDialogEx::OnPaint();	
 }
 
-// 사용자가 최소화된 창을 끄는 동안에 커서가 표시되도록 시스템에서
-//  이 함수를 호출합니다.
 HCURSOR CRTDDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
-
 
 void CRTDDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 {
@@ -272,27 +244,6 @@ void CRTDDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 
 	CDialogEx::OnGetMinMaxInfo(lpMMI);
 }
-
-
-void CRTDDlg::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	if (point.x >= 20 && point.x <= 70 && point.y >= 20 && point.y <= 50 && !connected)
-		Connect();
-	else if (point.x <= 590 && point.x >= 520 && point.y >= 180 && point.y <= 250)
-		state = 1;
-	else if (point.x <= 590 && point.x >= 520 && point.y >= 280 && point.y <= 350)
-		state = 2;
-	else if (point.x <= 590 && point.x >= 520 && point.y >= 380 && point.y <= 450)
-		state = 3;
-	else if (state != 0) {
-		area->ControlTower(point.x, point.y, state);
-		state = 0;
-	}
-	Invalidate();
-
-	CDialogEx::OnLButtonDown(nFlags, point);
-}
-
 
 void CRTDDlg::OnTimer(UINT_PTR nIDEvent)
 {
@@ -331,7 +282,10 @@ void CRTDDlg::OnTimer(UINT_PTR nIDEvent)
 		case 3:
 			area->Tick();
 			break;
+		default:
+			break;
 		}
+
 	}
 	//서버 접속없이 하려면 위를 주석처리 아래는 주석해제
 	/*
@@ -346,7 +300,6 @@ void CRTDDlg::OnTimer(UINT_PTR nIDEvent)
 			monsterMgr->Reset();
 			Wait(3000);
 			SetTimer(2, 500, nullptr);
-			//monsterMgr->ResetPoint();
 		}
 		else if (monsterMgr->extraMon <= 0 && monsterMgr->fieldMon <= 0 && round == 8) {
 			victory = 1;
@@ -370,12 +323,31 @@ void CRTDDlg::OnTimer(UINT_PTR nIDEvent)
 	case 3:
 		area->Tick();
 		break;
+	default:
+		break;
 	}*/
 	
-
 	CDialogEx::OnTimer(nIDEvent);
 }
 
+void CRTDDlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	if (point.x >= 20 && point.x <= 70 && point.y >= 20 && point.y <= 50 && !connected)
+		Connect();
+	else if (point.x <= 590 && point.x >= 520 && point.y >= 180 && point.y <= 250)
+		state = 1;
+	else if (point.x <= 590 && point.x >= 520 && point.y >= 280 && point.y <= 350)
+		state = 2;
+	else if (point.x <= 590 && point.x >= 520 && point.y >= 380 && point.y <= 450)
+		state = 3;
+	else if (state != 0) {
+		area->ControlTower(point.x, point.y, state);
+		state = 0;
+	}
+	Invalidate();
+
+	CDialogEx::OnLButtonDown(nFlags, point);
+}
 
 void CRTDDlg::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
@@ -388,7 +360,7 @@ void CRTDDlg::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	else if (nChar == 'e' || nChar == 'E') {
 		state = 3;
 	}
-	//Invalidate();
+	Invalidate();
 	CDialogEx::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 

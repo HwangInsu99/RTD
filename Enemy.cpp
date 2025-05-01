@@ -27,15 +27,15 @@ void Enemy::Tick()
 {
 	//방향전환
 	if (!die) {
-		if (Dir == 4)
-			y += speed;
-		else if (Dir == 1)
+		if (Dir == 1)
 			x += speed;
 		else if (Dir == 2)
 			y -= speed;
 		else if (Dir == 3)
 			x -= speed;
-		damageRect.SetRect(x + 5, y + 5, x + 15, y + 15);
+		else if (Dir == 4)
+			y += speed;
+		damageRect.SetRect(x - 10, y - 10, x + 10, y + 10);
 	}
 }
 void Enemy::Damaged(int x)
@@ -67,7 +67,6 @@ void Enemy::ContactCollide()
 	}
 }
 
-
 void Enemy::Draw(CDC& dc)
 {
 	if(!die)
@@ -79,4 +78,3 @@ void Enemy::GetRect(CRect& rect)
 	if(!die)
 		rect.SetRect(x + 5, y + 5, x + 15, y + 15);
 }
-

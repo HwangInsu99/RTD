@@ -76,12 +76,6 @@ void MonsterManager::Damage(int x, int y)
 		monster[x]->Damaged(y);
 }
 
-int MonsterManager::CheckHp(int x)
-{
-	return monster[x]->hp;
-}
-
-
 void MonsterManager::LoadImage()
 {
 	Enemy::LoadImage();

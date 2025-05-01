@@ -7,10 +7,9 @@
 #include "Monster.h"
 
 
-int point[] = { 71, 130, 130, 130,	71, 174,130, 174,71, 222, 130, 222 ,225, 130,280, 130,	225, 174,	280, 174,	225, 222,
-	280, 222,	373, 155,	433, 155,	373, 219,	433, 219,	30, 301,	78, 301,	135, 301,	30, 357,	78, 357,	135, 357,	225, 302,	280, 302,
-	224, 357,	280, 357,	366, 302,	416, 302,	468, 302,	366, 359,	416, 359,	468, 359,	64, 460,	124, 460,
-	64, 521,	124, 521,	224, 457,	281, 457,	224, 515,	281, 515,	224, 570,	281, 570,	372, 465,	432, 465,	372, 526,	432, 526 };
+int point[] = { 71,130, 130,130, 71,174, 130,174, 71,222, 130,222, 225,130, 280,130, 225,174, 280,174, 225,222,	280,222, 373,155, 433,155, 373,219,
+	433,219, 30,301, 78,301, 135,301, 30,357, 78,357, 135,357, 225,302, 280,302, 224,357, 280,357, 366,302, 416,302, 468,302, 366,359, 416,359,	468,359,
+	64,460, 124,460, 64,521, 124,521, 224,457, 281,457,	224,515, 281,515, 224,570, 281,570,	372,465, 432,465, 372,526, 432,526 };
 
 TowerManager::TowerManager()
 {
@@ -45,6 +44,8 @@ void TowerManager::summTower(int x, int y)
 		case 3:
 			tower[x] = new Saber(point[2 * x], point[2 * x + 1], 1);
 			break;
+		default:
+			break;
 		}
 	}
 }
@@ -69,6 +70,8 @@ void TowerManager::UpgradeTower(int x, int y)
 		case 3:
 			tower[x] = new Saber(point[2 * x], point[2 * x + 1], 2);
 			break;
+		default:
+			break;
 		}
 	}
 	else if (tower[x]->grade == 2 && money >= 100) {
@@ -89,6 +92,8 @@ void TowerManager::UpgradeTower(int x, int y)
 		case 3:
 			tower[x] = new Saber(point[2 * x], point[2 * x + 1], 3);
 			break;
+		default:
+			break;
 		}
 	}
 }
@@ -107,6 +112,8 @@ void TowerManager::Delete(int i) {
 			break;
 		case 3:
 			money = money + 100;
+			break;
+		default:
 			break;
 		}
 		delete tower[i];
@@ -145,7 +152,6 @@ void TowerManager::Draw(CDC& dc) {
 		if (tower[i] != nullptr)
 			tower[i]->Draw(dc);
 }
-
 
 void TowerManager::LoadImage() {
 	Archer::LoadImage();

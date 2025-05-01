@@ -20,36 +20,35 @@ Saber::Saber(int a, int b, int c)
 	this->posture = 0;
 	this->active = false;
 	this->target = 16;
-
+	this->range = 80;
 	damage = 5 + 5 * grade;
 }
-
-
 void Saber::Draw(CDC& dc)
 {
 	images[posture].Draw(dc, a - (10 + grade * 5), b - (10 + grade * 5), 20 + grade * 10, 20 + grade * 10);
 }
 void Saber::CheckIn(CRect monRect, int x)
 {
-	CRect myRect;
-	GetRect(myRect);
-	CRect myRect2;
-	GetRect2(myRect2);
-	CRect diff;
-	if (diff.IntersectRect(&myRect, &monRect) && !active) {
-		target = x;
-		active = true;
-	}
-	else if (diff.IntersectRect(&myRect2, &monRect) && !active) {
-		target = x;
-		active = true;
+	CPoint points[4] = {
+		CPoint(monRect.left, monRect.top),
+		CPoint(monRect.right, monRect.top),
+		CPoint(monRect.left, monRect.bottom),
+		CPoint(monRect.right, monRect.bottom)
+	};
+	for (int i = 0; i < 4; i++) {
+		int dx = points[i].x - a;
+		int dy = points[i].y - b;
+
+		if ((dx * dx + dy * dy) <= (range * range)) {
+			target = x;
+			active = true;
+		}
 	}
 }
 void Saber::Attack()
 {
 	monsterMgr->Damage(target, damage);
 }
-
 void Saber::posChange()
 {
 	if (posture == 2) {
@@ -60,14 +59,4 @@ void Saber::posChange()
 	}
 	else
 		posture++;
-}
-
-void Saber::GetRect(CRect& rect)
-{
-	rect.SetRect(a - 80, b - 30, a + 80, b + 30);
-}
-
-void Saber::GetRect2(CRect& rect)
-{
-	rect.SetRect(a - 30, b - 80, a + 30, b + 80);
 }

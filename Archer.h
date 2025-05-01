@@ -15,6 +15,4 @@ public:
 	void CheckIn(CRect monRect, int x);
 	void Attack();
 	void posChange();
-	void GetRect(CRect& rect);
 };
-

@@ -20,6 +20,7 @@ Archer::Archer(int a, int b, int c)
 	this->posture = 0;
 	this->active = false;
 	this->target = 16;
+	this->range = 140;
 	damage = 4 + 4 * grade;
 }
 void Archer::Draw(CDC& dc)
@@ -29,12 +30,20 @@ void Archer::Draw(CDC& dc)
 //공격범위에 적이 들어오는지 확인
 void Archer::CheckIn(CRect monRect, int x)
 {
-	CRect myRect;
-	GetRect(myRect);
-	CRect diff;
-	if (diff.IntersectRect(&myRect, &monRect) && !active) {
-		target = x;
-		active = true;
+	CPoint points[4] = {
+		CPoint(monRect.left, monRect.top),
+		CPoint(monRect.right, monRect.top),
+		CPoint(monRect.left, monRect.bottom),
+		CPoint(monRect.right, monRect.bottom)
+	};
+	for (int i = 0; i < 4; i++) {
+		int dx = points[i].x - a;
+		int dy = points[i].y - b;
+
+		if ((dx * dx + dy * dy) <= (range * range)) {
+			target = x;
+			active = true;
+		}
 	}
 }
 void Archer::Attack()
@@ -52,9 +61,4 @@ void Archer::posChange()
 	}
 	else
 		posture++;
-}
-//공격범위
-void Archer::GetRect(CRect& rect)
-{
-	rect.SetRect(a - 120, b - 120, a + 120, b + 120);
 }

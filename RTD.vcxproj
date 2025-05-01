@@ -204,7 +204,6 @@
   <ItemGroup>
     <ClCompile Include="Archer.cpp" />
     <ClCompile Include="Area.cpp" />
-    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MonsterManager.cpp" />
     <ClCompile Include="SocCom.cpp" />
     <ClCompile Include="TowerManager.cpp" />
@@ -220,7 +219,6 @@
     <ClCompile Include="RTD.cpp" />
     <ClCompile Include="RTDDlg.cpp" />
     <ClCompile Include="Saber.cpp" />
-    <ClCompile Include="Tower.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RTD.rc" />

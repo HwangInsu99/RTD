@@ -1,5 +1,4 @@
 #pragma once
-//#include <vector>
 
 class Tower;
 
@@ -8,8 +7,6 @@ class TowerManager
 public:
 	Tower* tower[46];
 	int money;
-	//std::vector<Tower*> tower;
-
 
 	TowerManager();
 	~TowerManager();
@@ -21,4 +18,3 @@ public:
 	void Delete(int i);
 	void LoadImage();
 };
-

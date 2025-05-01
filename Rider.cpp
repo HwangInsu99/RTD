@@ -20,23 +20,29 @@ Rider::Rider(int a, int b, int c)
 	this->posture = 0;
 	this->active = false;
 	this->target = 16;
-
+	this->range = 180;
 	damage = 3 + 4 * grade;
 }
-
-
 void Rider::Draw(CDC& dc)
 {
 	images[posture].Draw(dc, a - (10 + grade * 5), b - (10 + grade * 5), 20 + grade * 10, 20 + grade * 10);
 }
 void Rider::CheckIn(CRect monRect, int x)
 {
-	CRect myRect;
-	GetRect(myRect);
-	CRect diff;
-	if (diff.IntersectRect(&myRect, &monRect) && !active) {
-		target = x;
-		active = true;
+	CPoint points[4] = {
+		CPoint(monRect.left, monRect.top),
+		CPoint(monRect.right, monRect.top),
+		CPoint(monRect.left, monRect.bottom),
+		CPoint(monRect.right, monRect.bottom)
+	};
+	for (int i = 0; i < 4; i++) {
+		int dx = points[i].x - a;
+		int dy = points[i].y - b;
+
+		if ((dx * dx + dy * dy) <= (range * range)) {
+			target = x;
+			active = true;
+		}
 	}
 }
 void Rider::Attack()
@@ -53,8 +59,4 @@ void Rider::posChange()
 	}
 	else
 		posture++;
-}
-void Rider::GetRect(CRect& rect)
-{
-	rect.SetRect(a - 180, b - 180, a + 180, b + 180);
 }

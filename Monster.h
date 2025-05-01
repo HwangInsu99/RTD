@@ -3,6 +3,8 @@
 class Monster
 {
 public:
+	virtual ~Monster() {}
+
 	int hp;
 	int Dir;
 	int speed;
@@ -18,4 +20,3 @@ public:
 	virtual void Damaged(int x) = 0;
 	virtual void ContactCollide() = 0;
 };
-

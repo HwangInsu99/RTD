@@ -13,7 +13,5 @@ public:
 	void Tick();
 	void Reset();
 	void Damage(int x, int y);
-	int CheckHp(int x);
 	void LoadImage();
 };
-

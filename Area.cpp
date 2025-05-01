@@ -6,7 +6,6 @@
 Area::Area()
 {
 	towerMgr = new TowerManager();
-	Dir = 1;
 	num = 0;
 	EndRect = new CRect(167,113,193,130);
 
@@ -73,14 +72,13 @@ Area::Area()
 		empty[i] = 4;
 }
 
-
 void Area::ControlTower(int x, int y, STATE state)
 {
 	CPoint clickP(x, y);
 
 	srand((unsigned int)time(NULL));
 	
-
+	//ºóÄ­ÀÎÁö È®ÀÎ
 	if (state == 1) { // Å¸¿ö »ý¼º
 		for (int i = 0; i < 46; i++) {
 			if (SummRect[i].PtInRect(clickP) && empty[i] == 4) {
@@ -100,7 +98,7 @@ void Area::ControlTower(int x, int y, STATE state)
 			}
 		}
 	}
-	else if (state == 3) { // ÆÈ±â
+	else if (state == 3) { // ÆÈ±â = ºóÄ­À¸·Î ¸¸µë
 		for (int i = 0; i < 46; i++) {
 			if (SummRect[i].PtInRect(clickP) && empty[i] != 4) {
 				empty[i] = 4;
